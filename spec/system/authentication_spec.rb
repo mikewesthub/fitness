@@ -44,7 +44,7 @@ RSpec.describe "Authentication", type: :system do
       fill_in "Email", with: "test@example.com"
       fill_in "Password", with: "password123"
 
-      click_button "Log In"
+      click_button "Sign in"
 
       expect(page).to have_content("Logged in successfully.")
       expect(page).to have_content("Welcome, Test User!")
@@ -56,9 +56,19 @@ RSpec.describe "Authentication", type: :system do
       fill_in "Email", with: "test@example.com"
       fill_in "Password", with: "wrongpassword"
 
-      click_button "Log In"
+      click_button "Sign in"
 
       expect(page).to have_content("Invalid email or password")
+    end
+
+    it "displays remember me checkbox" do
+      visit login_path
+      expect(page).to have_field("Remember me")
+    end
+
+    it "displays forgot password link" do
+      visit login_path
+      expect(page).to have_link("Forgot password?")
     end
   end
 

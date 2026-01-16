@@ -66,4 +66,35 @@ RSpec.describe User, type: :model do
       expect(user.authenticate('wrongpassword')).to be_falsey
     end
   end
+
+  describe 'remember me functionality' do
+    let(:user) { User.create!(name: 'beatrix', email: 'test@example.com', password: 'password123') }
+
+    it 'creates a remember token and digest' do
+      user.remember
+      expect(user.remember_token).not_to be_nil
+      expect(user.remember_digest).not_to be_nil
+    end
+
+    it 'authenticates with valid remember token' do
+      user.remember
+      expect(user.authenticated?(user.remember_token)).to be true
+    end
+
+    it 'does not authenticate with invalid remember token' do
+      user.remember
+      expect(user.authenticated?('invalid_token')).to be false
+    end
+
+    it 'does not authenticate when remember_digest is nil' do
+      expect(user.authenticated?('any_token')).to be false
+    end
+
+    it 'forgets the user by clearing remember_digest' do
+      user.remember
+      user.forget
+      expect(user.remember_digest).to be_nil
+    end
+  end
 end
+

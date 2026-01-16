@@ -28,6 +28,20 @@ RSpec.describe "Sessions", type: :request do
       expect(response).to have_http_status(:unprocessable_content)
       expect(session[:user_id]).to be_nil
     end
+
+    it "sets remember me cookies when checkbox is checked" do
+      post login_path, params: { email: 'test@example.com', password: 'password123', remember_me: '1' }
+      expect(response).to redirect_to(root_path)
+      expect(cookies.encrypted[:user_id]).to eq(user.id)
+      expect(cookies[:remember_token]).not_to be_nil
+    end
+
+    it "does not set remember me cookies when checkbox is unchecked" do
+      post login_path, params: { email: 'test@example.com', password: 'password123', remember_me: '0' }
+      expect(response).to redirect_to(root_path)
+      expect(cookies[:user_id]).to be_nil
+      expect(cookies[:remember_token]).to be_nil
+    end
   end
 
   describe "DELETE /logout" do
