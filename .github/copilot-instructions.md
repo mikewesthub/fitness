@@ -34,16 +34,14 @@ This is a Ruby on Rails 8.1.2 application for fitness tracking. The project uses
 ## Testing
 
 ### Test Framework
-- The project has **RSpec** configured but also supports Minitest
-- RSpec files go in `spec/` directory with naming convention: `*_spec.rb`
-- Minitest files go in `test/` directory with naming convention: `*_test.rb`
+- Use **RSpec** for all tests
+- Test files go in `spec/` directory with naming convention: `*_spec.rb`
 - Use Capybara with Selenium WebDriver for system tests
-- **Note**: CI currently runs `bin/rails test` (Minitest), but RSpec is fully configured
 
 ### Running Tests
-- RSpec tests: `bundle exec rspec` or `bin/rails spec`
-- Minitest tests: `bin/rails test`
-- Run specific RSpec test: `bundle exec rspec spec/path/to/test_spec.rb`
+- Run all tests: `bundle exec rspec` or `bin/rails spec`
+- Run specific test: `bundle exec rspec spec/path/to/test_spec.rb`
+- Run specific test directory: `bundle exec rspec spec/models`
 - The test database schema is maintained automatically
 
 ### Test Configuration
@@ -76,12 +74,10 @@ Run the full CI suite using `bin/ci`, which includes:
 3. **Security Audits**:
    - Gem vulnerabilities: `bin/bundler-audit`
    - Importmap vulnerabilities: `bin/importmap audit`
-   - Code analysis: `bin/brakeman --quiet --no-pager --exit-on-warn --exit-on-error`
-4. **Tests**: `bin/rails test`
+4. **Tests**: `bundle exec rspec`
 5. **Seed Test**: Test database seeding works
 
 ### Security Tools
-- **Brakeman**: Static analysis for security vulnerabilities
 - **Bundler Audit**: Checks gems for known security issues
 - Always address security warnings before committing
 
@@ -142,15 +138,13 @@ bin/rails console               # Open Rails console
 bin/rails routes                # View all routes
 
 # Testing
-bin/rails test                  # Run Minitest tests (used by CI)
-bundle exec rspec               # Run RSpec tests
+bundle exec rspec               # Run all RSpec tests
 bin/rails spec                  # Run RSpec tests (alternative)
-bin/rails test:system           # Run system tests
+bundle exec rspec spec/models   # Run specific test directory
 
 # Code Quality
 bin/rubocop                     # Run style checker
 bin/rubocop -a                  # Auto-fix style issues
-bin/brakeman                    # Security scan
 bin/bundler-audit               # Check gem vulnerabilities
 bin/ci                          # Run full CI suite
 
@@ -166,7 +160,7 @@ bin/kamal deploy                # Deploy with Kamal
 
 ## Important Notes
 
-- The project supports both **RSpec** and **Minitest** - CI uses Minitest (`bin/rails test`)
+- Use **RSpec** for all testing (not Minitest)
 - **Do not** commit `config/master.key` or any secrets to version control
 - **Always** run security checks before committing changes
 - **Always** ensure code passes RuboCop before committing
