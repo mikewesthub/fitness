@@ -31,7 +31,6 @@ RSpec.describe "Authentication", type: :system do
 
       click_button "Sign Up"
 
-      # Capybara automatically waits for content to appear
       expect(page).to have_content("Password is too short")
     end
   end
