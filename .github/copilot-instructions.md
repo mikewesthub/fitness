@@ -34,19 +34,20 @@ This is a Ruby on Rails 8.1.2 application for fitness tracking. The project uses
 ## Testing
 
 ### Test Framework
-- Use **RSpec** for all tests (not Minitest)
-- Test files should be in `spec/` directory
-- Follow the naming convention: `*_spec.rb` for test files
+- The project has **RSpec** configured but also supports Minitest
+- RSpec files go in `spec/` directory with naming convention: `*_spec.rb`
+- Minitest files go in `test/` directory with naming convention: `*_test.rb`
 - Use Capybara with Selenium WebDriver for system tests
+- **Note**: CI currently runs `bin/rails test` (Minitest), but RSpec is fully configured
 
 ### Running Tests
-- Run all tests: `bin/rails spec` (or `bundle exec rspec`)
-- Run specific test: `bin/rails spec spec/path/to/test_spec.rb`
+- RSpec tests: `bundle exec rspec` or `bin/rails spec`
+- Minitest tests: `bin/rails test`
+- Run specific RSpec test: `bundle exec rspec spec/path/to/test_spec.rb`
 - The test database schema is maintained automatically
 
 ### Test Configuration
-- Tests require `spec_helper` (configured in `.rspec`)
-- Rails-specific test configuration is in `spec/rails_helper.rb`
+- RSpec configuration in `.rspec`, `spec/spec_helper.rb`, and `spec/rails_helper.rb`
 - Test environment is isolated from development and production
 
 ## Development Workflow
@@ -141,8 +142,10 @@ bin/rails console               # Open Rails console
 bin/rails routes                # View all routes
 
 # Testing
-bin/rails spec                  # Run all RSpec tests
-bin/rails spec spec/models      # Run specific directory tests
+bin/rails test                  # Run Minitest tests (used by CI)
+bundle exec rspec               # Run RSpec tests
+bin/rails spec                  # Run RSpec tests (alternative)
+bin/rails test:system           # Run system tests
 
 # Code Quality
 bin/rubocop                     # Run style checker
@@ -163,7 +166,7 @@ bin/kamal deploy                # Deploy with Kamal
 
 ## Important Notes
 
-- **Do not** use `bin/rails test` for writing new tests - use RSpec instead
+- The project supports both **RSpec** and **Minitest** - CI uses Minitest (`bin/rails test`)
 - **Do not** commit `config/master.key` or any secrets to version control
 - **Always** run security checks before committing changes
 - **Always** ensure code passes RuboCop before committing
